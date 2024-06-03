@@ -31,6 +31,10 @@
             color: rgb(252, 68, 68);
         }
 
+        .product_table_data{
+          color: white;
+        }
+
     </style>
   @include('admin.css')
   </head>
@@ -56,55 +60,66 @@
 
 
          
-            <form action="{{url('add_category')}}" method="post">
 
-                @csrf
+              
 
                 <div>
-                    <h2 class="heading_category">Add Category</h2>
+                    <h2 class="heading_category">Product List</h2>
                 </div>
-                <div>
-                    
-                        <input type="text" class="category" name= "category">
-                        <input type="submit" class="btn btn-danger" name="add_category" id="" value="Add Category">
-                </div>
-            </form>
+   
 
           </div>
             
           
-          <div class="Cat_table table-deg">
-            <table class="table-striped category_table">
+          <div class=" Cat_table table-deg" style="margin-left: 4rem;">
+            <table class="table-striped category_table table-bordered">
                 <thead>
                   <tr>
                     <th scope="col" class="cat_heading">SL</th>
-                    <th scope="col" class="cat_heading">Category Name</th>
+                    <th scope="col" class="cat_heading">Product Name</th>
+                    <th scope="col" class="cat_heading"> Price</th>
+                    <th scope="col" class="cat_heading"> Discription</th>
+                    <th scope="col" class="cat_heading"> Qty</th>
+                    <th scope="col" class="cat_heading"> Category</th>
+                    <th scope="col" class="cat_heading">Image</th>
                     <th scope="col" class="cat_heading">Action</th>
-
-
+                
                   
                 </thead>
                 <tbody>
 
-                    @foreach ($category as $category )
-                    <tr>
-                        <td class = "cat_data">{{$loop->iteration}}</td>
-                        <td class = "cat_data">{{$category->category_name}}</td>
-                       <td> 
+                    @foreach ($products as $product)
 
-                        <a class="btn btn-success" href="{{url('edit_category',$category->id)}}">Edit</a>
-                        <a class="btn btn-danger" href="{{url('delete_category',$category->id)}}" onclick="return confirm('Are you sure?')">Delete</a>
-                      </td>
+                    <th scope="row" class="product_table_data" >{{$loop->iteration}}</th>
+                    <td class="product_table_data">{{$product->product_name}}</td>
+                    <td class="product_table_data">{{$product->product_price}}</td>
+                    <td class="product_table_data">{!! Str::limit($product->product_discription,50) !!}</td>
+                    <td class="product_table_data">{{$product->product_qty}}</td>
+                    <td class="product_table_data">{{$product->product_category}}</td>
+                    <td class=""><img width="120" height="120" src="products/{{$product->product_img}}" alt="product_img"></td>
+                    {{-- <td>{{$product->product_name}}</td> --}}
+                    <td>
+                      <a href="{{url('edit_product', $product->id)}}" class="btn btn-success">Edit</a>
+                      <a href="{{ url('delete_product', $product->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
 
-                         
-                        </tr>
-                        
-                    @endforeach
-                 
+
+
+                    <tr>   
+                    @endforeach            
                  
                 </tbody>
               </table>
+
+       
+
           </div>
+
+          <div class="d-felx justify-content-center"    style="margin-left: 63rem;margin-top: 23px;" >
+
+            {{ $products->links() }}
+
+        </div>
 
 
 
