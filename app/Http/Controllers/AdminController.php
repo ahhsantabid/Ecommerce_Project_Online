@@ -86,7 +86,7 @@ public function upload_product(Request $request){
 
 public function view_product(Request $request){
 
-    $products = Product::latest()->paginate(6);
+    $products = Product::latest()->paginate(5);
 
     return view('admin.viewProduct',compact('products'));
 }
@@ -123,13 +123,15 @@ public function update_product(Request $request,$id){
     $product->save();
 
     return redirect('/view_product')->with("success","Product Updated Successfully!");
+}
 
 
-    
-    
+public function product_search(Request $request){
 
+     $product_search = $request->product_search;
+     $products = Product::where('product_name','LIKE','%'.$product_search.'%')->orWhere('product_category','LIKE','%'.$product_search.'%')->paginate(4);
 
-
+     return view('admin.viewProduct',compact('products'));
 }
 
 
